@@ -78,8 +78,6 @@ while True:
         catalog = initCatalog()
         loadData(catalog)
         print('Artistas cargados: ' + str(mp.size(catalog['artistas']["mID"])))
-        print("Medios utilizados " + str(mp.size(catalog["obras"]["mMedio"])))
-        print("Nacionalidades obras " + str(mp.size(catalog["obras"]["mNacionalidad"])))
         stop_time = time.process_time()
         timepaso= stop_time-start_time
         print("Tiempo transcurrido "+ str(timepaso))
@@ -99,6 +97,7 @@ while True:
             x.field_names = ["Nombre", "Año de nacimiento", "Año de fallecimiento", "Nacionalidad", "Genero"]
             for i in lt.iterator(listaEnRango):
                 x.add_row([str(i["DisplayName"]),str(i["BeginDate"]),str(i["EndDate"]),str(i["Nationality"]),str(i["Gender"])])
+                x.max_width = 25
             print(x)
         elif lt.size(listaEnRango) > 3:
             primeras= lt.subList(listaEnRango,1,3)
@@ -106,11 +105,13 @@ while True:
             a.field_names = ["Nombre", "Año de nacimiento", "Año de fallecimiento", "Nacionalidad", "Genero"]
             for i in lt.iterator(primeras):
                 a.add_row([str(i["DisplayName"]),str(i["BeginDate"]),str(i["EndDate"]),str(i["Nationality"]),str(i["Gender"])])
+                a.max_width = 25
             ultimas= lt.subList(listaEnRango,lt.size(listaEnRango)-2,3)
             b = PrettyTable() 
             b.field_names = ["Nombre", "Año de nacimiento", "Año de fallecimiento", "Nacionalidad", "Genero"]
             for i in lt.iterator(ultimas):
                 b.add_row([str(i["DisplayName"]),str(i["BeginDate"]),str(i["EndDate"]),str(i["Nationality"]),str(i["Gender"])])
+                b.max_width = 25
             print("Los primeros 3  artistas en rango son:")  
             print(a)
             print("Los ultimas 3  artistas en rango son:") 
@@ -195,6 +196,7 @@ while True:
             x.field_names = ["Titulo", "Fecha de la Obra", "Medio", "Dimensiones"]
             for i in lt.iterator(listaObrasdeDepto):
                 x.add_row([str(i["Title"]),str(i["Date"]),str(i["Medium"]),str(i["Dimensions"])])
+                x.max_width = 25
             print(x)
         elif lt.size(listaObrasdeDepto) > 5:
             print("Las 5 obras mas costosas son:")
@@ -203,12 +205,14 @@ while True:
             for i in lt.iterator(obrasCaras):
                 #TODO añadir info requerida en tabla#
                 a.add_row([str(i["Title"]),str(i["Date"]),str(i["Medium"]),str(i["Dimensions"])])
+                a.max_width = 25
             print(a)
             print("Las 5 obras mas antiguas son:")
             b = PrettyTable() 
             b.field_names = ["Titulo", "Fecha de la Obra", "Medio", "Dimensiones"]
             for i in lt.iterator(obrasantiguas):
                 b.add_row([str(i["Title"]),str(i["Date"]),str(i["Medium"]),str(i["Dimensions"])])
+                b.max_width = 25
             print(b)
         stop_time = time.process_time()
         timepaso= stop_time-start_time
