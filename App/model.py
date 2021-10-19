@@ -108,6 +108,7 @@ def addObra(catalog, obra):
     artwork["Height (cm)"]= obra["Height (cm)"]
     artwork["Length (cm)"]= obra["Length (cm)"]
     artwork["Weight (kg)"]= obra["Weight (kg)"]
+    artwork["Circumference (cm)"]= obra["Circumference (cm)"]
     artwork["Width (cm)"]= obra["Width (cm)"]
     artwork["Classification"]= obra["Classification"]
     artwork["Seat Height (cm)"]= obra["Seat Height (cm)"]
@@ -195,23 +196,46 @@ def cmpArtistByDate(artist1, artist2):
 #     listaOrdenada= m.sort(ListaEnRango,cmpArtistByDate)
 #     return (listaEnRango)
 #REQ 2#
-def sortArtworksandRange(lista,inicial,final):
+def sortArtworksandRange(catalog,inicial,final):
     inicial=datetime.strptime(str(inicial),"%Y-%m-%d")
     final=datetime.strptime(str(final),"%Y-%m-%d")
+    listaAnhosAd=mp.keySet(catalog["obras"]["mFechaAd"])
     listaEnRango= lt.newList("ARRAY_LIST")
+    listaInfo=lt.newList("ARRAY_LIST")
     purchased=0
-    for i in lt.iterator(lista):
-        date=i['DateAcquired']
-        if date=="":
-            date="0001-01-01"
-        date_format=datetime.strptime(str(date),"%Y-%m-%d")
-        if date_format<= final and date_format>=inicial:
-                lt.addLast(listaEnRango,i)
-                credit_line= str(i["CreditLine"]).lower()
-                if ("Purchase").lower() in credit_line or ("Purchased").lower() in credit_line :
-                    purchased+=1
-    lista_ordenada= ins.sort(listaEnRango,cmpArtworkByDateAcquired)
-    return (lista_ordenada,purchased)
+    for i in lt.iterator(listaAnhosAd):
+         date=i
+         if date=="":
+           date="0001-01-01"
+         date_format=datetime.strptime(str(date),"%Y-%m-%d")
+         if date_format<= final and date_format>=inicial:
+               listaInfo=mp.get(catalog["obras"]["mFechaAd"],date)["value"]
+               for info in lt.iterator(listaInfo):
+                   lt.addLast(listaEnRango,info)
+               creditLine=catalog["obras"]["mFechaAd"]["CreditLine"]
+               if creditLine in ("Purchase").lower or ("Purchased").lower() in creditLine:
+                   purchased+=1
+    lista_ordenada= m.sort(listaEnRango,cmpArtworkByDateAcquired)
+    dictRta={"lista":lista_ordenada,"numPurchase":purchased}
+    return (dictRta)
+#Versión sin mapa
+#def sortArtworksandRange(lista,inicial,final):
+#   inicial=datetime.strptime(str(inicial),"%Y-%m-%d")
+#   final=datetime.strptime(str(final),"%Y-%m-%d")
+#   listaEnRango= lt.newList("ARRAY_LIST")
+#   purchased=0
+#   for i in lt.iterator(lista):
+#        date=i['DateAcquired']
+#       if date=="":
+#           date="0001-01-01"
+#       date_format=datetime.strptime(str(date),"%Y-%m-%d")
+#       if date_format<= final and date_format>=inicial:
+#               lt.addLast(listaEnRango,i)
+#               credit_line= str(i["CreditLine"]).lower()
+#               if ("Purchase").lower() in credit_line or ("Purchased").lower() in credit_line :
+#                   purchased+=1
+#     lista_ordenada= ins.sort(listaEnRango,cmpArtworkByDateAcquired)
+#     return (lista_ordenada,purchased)
 def sortArtworksByDate(lista):
     lista_ordenada= lista.copy()
     lista_ordenada= m.sort(lista_ordenada,cmpArtworkByDate)
@@ -245,17 +269,40 @@ def buscarTecnicaMasRep(Tecnicas):
     return TecnicaMas
 #REQ 4#
 def RankingCountriesByArtworks (catalog,obras):
-    lista_artistas=catalog["artistas"]
-    dict_nacionalidades= {}
-    for i in obras:
-        for n in lt.iterator(lista_artistas):
-            if i in n["Artworks"]:
-                nacionalidad= n["Nationality"]
-                if nacionalidad not in dict_nacionalidades:
-                    dict_nacionalidades[nacionalidad]=1
-                else:
-                    dict_nacionalidades[nacionalidad]+=1
-    return (dict_nacionalidades)
+    nacionalidades=catalog["obras"]["mNacionalidad"]
+    keyNacionalidades=mp.keySet(nacionalidades)
+    mayor=0
+    listaNumObras=lt.newList("ARRAY_LIST")
+    for i in lt.iterator(keyNacionalidades):
+        listaElement=lt.newList("ARRAY_LIST")
+        element=mp.get(nacionalidades,i)["value"]
+        tam=int(mp.size(element)) #num de obras
+        if tam>mayor:
+            mayor=element
+        lt.addLast(listaElement,i)
+        lt.addLast(listaElement,tam)
+        lt.addLast(listaNumObras,listaElement)
+    m.sort(listaNumObras,cmpNumObras)
+    return(listaNumObras)
+
+def cmpNumObras (num1,num2):
+    
+    temp=False
+    temp= int(num1)<int(num2)
+    return temp
+#RETO 1 VERSIÓN 
+#def RankingCountriesByArtworks (catalog,obras):
+    #lista_artistas=catalog["artistas"]
+    #dict_nacionalidades= {}
+    #for i in obras:
+        #for n in lt.iterator(lista_artistas):
+            #if i in n["Artworks"]:
+                #nacionalidad= n["Nationality"]
+                #if nacionalidad not in dict_nacionalidades:
+                    #dict_nacionalidades[nacionalidad]=1
+                #else:
+                    #dict_nacionalidades[nacionalidad]+=1
+    #return (dict_nacionalidades)
 
 #REQ 5#
 def AsignarPrecio(object):
@@ -268,6 +315,9 @@ def AsignarPrecio(object):
     if object["Width (cm)"]!="" and object["Height (cm)"]!="":
         m2=(float(object["Width (cm)"]))*(float(object["Height (cm)"]))
         m2=m2/10000
+    elif object["Circumference (cm)"]!="" and object["Diameter (cm)"]!="":
+        m2=(float(object["Circumference (cm)"]))*(float(object["Circumference (cm)"]))
+        m2=m2/1000
     precio=-1
     preciom3= 0
     preciom2= 0

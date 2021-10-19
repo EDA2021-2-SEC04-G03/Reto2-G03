@@ -124,12 +124,12 @@ while True:
         start_time = time.process_time()
         inicial= input("Indique la fecha inicial: ")
         final= input("Indique la fecha final: ")
-        (lista,numPurchased) = (controller.sortArtworksandRange(catalog["obras"],inicial,final))
-        if lt.isEmpty(lista):
+        dict = (controller.sortArtworksandRange(catalog,inicial,final))
+        if lt.isEmpty(dict["lista"]):
             print("No hay obras en el rango")
         else:
-            print("Hay "+ str(lt.size(lista))+ " obras  entre "+ str(inicial) +" y "+ str(final))
-            print("Hay "+ str(numPurchased)+ " obras adquiridas por compra")
+            print("Hay "+ str(lt.size(dict["lista"]))+ " obras  entre "+ str(inicial) +" y "+ str(final))
+            print("Hay "+ str(dict["numPurchased"])+ " obras adquiridas por compra")
             
         stop_time = time.process_time()
         timepaso= stop_time-start_time
