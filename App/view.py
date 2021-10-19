@@ -147,6 +147,7 @@ while True:
             x.field_names = ["Titulo", "Fecha de la Obra", "Medio", "Dimensiones"]
             for i in lt.iterator(listaObrasTecnica):
                 x.add_row([str(i["Title"]),str(i["Date"]),str(i["Medium"]),str(i["Dimensions"])])
+                x.max_width = 25
             print(x)
         elif lt.size(listaObrasTecnica) > 3:
             primeras= lt.subList(listaObrasTecnica,1,3)
@@ -154,11 +155,13 @@ while True:
             a.field_names = ["Titulo", "Fecha de la Obra", "Medio", "Dimensiones"]
             for i in lt.iterator(primeras):
                 a.add_row([str(i["Title"]),str(i["Date"]),str(i["Medium"]),str(i["Dimensions"])])
+                a.max_width = 25
             ultimas= lt.subList(listaObrasTecnica,lt.size(listaObrasTecnica)-3,3)
             b = PrettyTable() 
             b.field_names = ["Titulo", "Fecha de la Obra", "Medio", "Dimensiones"]
             for i in lt.iterator(primeras):
                 b.add_row([str(i["Title"]),str(i["Date"]),str(i["Medium"]),str(i["Dimensions"])])
+                b.max_width = 25
             print("Las primeras 3  obras en esta técnica son:")  
             print(a)
             print("Las ultimas 3  obras en esta técnica son:") 
