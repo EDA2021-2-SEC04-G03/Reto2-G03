@@ -271,14 +271,11 @@ def buscarTecnicaMasRep(Tecnicas):
 def RankingCountriesByArtworks (catalog,obras):
     nacionalidades=catalog["obras"]["mNacionalidad"]
     keyNacionalidades=mp.keySet(nacionalidades)
-    mayor=0
     listaNumObras=lt.newList("ARRAY_LIST")
     for i in lt.iterator(keyNacionalidades):
         listaElement=lt.newList("ARRAY_LIST")
         element=mp.get(nacionalidades,i)["value"]
         tam=int(mp.size(element)) #num de obras
-        if tam>mayor:
-            mayor=element
         lt.addLast(listaElement,i)
         lt.addLast(listaElement,tam)
         lt.addLast(listaNumObras,listaElement)
@@ -286,9 +283,10 @@ def RankingCountriesByArtworks (catalog,obras):
     return(listaNumObras)
 
 def cmpNumObras (num1,num2):
-    
+    num1=lt.lastElement(num1)
+    num2=lt.lastElement(num2)
     temp=False
-    temp= int(num1)<int(num2)
+    temp= int(num1)>int(num2)
     return temp
 #RETO 1 VERSIÓN 
 #def RankingCountriesByArtworks (catalog,obras):
@@ -317,7 +315,7 @@ def AsignarPrecio(object):
         m2=m2/10000
     elif object["Circumference (cm)"]!="" and object["Diameter (cm)"]!="":
         m2=(float(object["Circumference (cm)"]))*(float(object["Circumference (cm)"]))
-        m2=m2/1000
+        m2=m2/10000
     precio=-1
     preciom3= 0
     preciom2= 0
