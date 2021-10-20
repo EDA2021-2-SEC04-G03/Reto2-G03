@@ -336,7 +336,7 @@ def AsignarPrecio(object):
         precio= preciom3
     elif precioKg> preciom2 and precioKg> preciom3:
         precio= precioKg 
-    return (precio)
+    return (round(precio,2))
 
 def OrdenarDepartamentoAsignarPrecioyPeso(catalogo, departamento):
     obrasPorDepartamento= mp.get(catalogo['obras']["mDepartamento"],departamento)["value"]

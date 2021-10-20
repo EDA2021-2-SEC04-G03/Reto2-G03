@@ -196,26 +196,46 @@ while True:
         if lt.size(listaObrasdeDepto) <= 5:
             print("Hay 5 o menos obras en este departamento, estas son:")
             x = PrettyTable() 
-            x.field_names = ["Titulo", "Fecha de la Obra", "Medio", "Dimensiones"]
+            x.field_names = ["Titulo","Costo", "Fecha de la Obra", "Medio", "Dimensiones", "Clasificación","Artistas"]
             for i in lt.iterator(listaObrasdeDepto):
-                x.add_row([str(i["Title"]),str(i["Date"]),str(i["Medium"]),str(i["Dimensions"])])
-                x.max_width = 25
+                artistasTexto= ""
+                for artista in lt.iterator(i["Artists"]):
+                    nombre= artista["DisplayName"]
+                    if artistasTexto=="":
+                        artistasTexto= artistasTexto + nombre
+                    else:
+                        artistasTexto= artistasTexto + ","+ nombre
+                x.add_row([str(i["Title"]),str(i["precio"]),str(i["Date"]),str(i["Medium"]),str(i["Dimensions"]),str(i["Classification"]),str(artistasTexto)])
+                x.max_width = 10
             print(x)
         elif lt.size(listaObrasdeDepto) > 5:
             print("Las 5 obras mas costosas son:")
             a = PrettyTable() 
-            a.field_names = ["Titulo", "Fecha de la Obra", "Medio", "Dimensiones"]
+            a.field_names = ["Titulo","Costo", "Fecha de la Obra", "Medio", "Dimensiones", "Clasificación","Artistas"]
             for i in lt.iterator(obrasCaras):
-                #TODO añadir info requerida en tabla#
-                a.add_row([str(i["Title"]),str(i["Date"]),str(i["Medium"]),str(i["Dimensions"])])
-                a.max_width = 25
+                artistasTexto= ""
+                for artista in lt.iterator(i["Artists"]):
+                    nombre= artista["DisplayName"]
+                    if artistasTexto=="":
+                        artistasTexto= artistasTexto + nombre
+                    else:
+                        artistasTexto= artistasTexto + ","+ nombre
+                a.add_row([str(i["Title"]),str(i["precio"]),str(i["Date"]),str(i["Medium"]),str(i["Dimensions"]),str(i["Classification"]),str(artistasTexto)])
+                a.max_width = 10
             print(a)
             print("Las 5 obras mas antiguas son:")
             b = PrettyTable() 
-            b.field_names = ["Titulo", "Fecha de la Obra", "Medio", "Dimensiones"]
+            b.field_names = ["Titulo","Costo", "Fecha de la Obra", "Medio", "Dimensiones", "Clasificación","Artistas"]
             for i in lt.iterator(obrasantiguas):
-                b.add_row([str(i["Title"]),str(i["Date"]),str(i["Medium"]),str(i["Dimensions"])])
-                b.max_width = 25
+                artistasTexto= ""
+                for artista in lt.iterator(i["Artists"]):
+                    nombre= artista["DisplayName"]
+                    if artistasTexto=="":
+                        artistasTexto= artistasTexto + nombre
+                    else:
+                        artistasTexto= artistasTexto + ","+ nombre
+                b.add_row([str(i["Title"]),str(i["precio"]),str(i["Date"]),str(i["Medium"]),str(i["Dimensions"]),str(i["Classification"]),str(artistasTexto)])
+                b.max_width = 10
             print(b)
         stop_time = time.process_time()
         timepaso= stop_time-start_time
