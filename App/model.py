@@ -212,7 +212,10 @@ def sortArtworksandRange(catalog,inicial,final):
                listaInfo=mp.get(catalog["obras"]["mFechaAd"],date)["value"]
                for info in lt.iterator(listaInfo):
                    lt.addLast(listaEnRango,info)
-               creditLine=catalog["obras"]["mFechaAd"]["CreditLine"]
+               creditLine=catalog["obras"]["mFechaAd"]
+               credit=mp.get(creditLine,i)
+               credit=me.getValue(credit)
+               credit=credit["CreditLine"]
                if creditLine in ("Purchase").lower or ("Purchased").lower() in creditLine:
                    purchased+=1
     lista_ordenada= m.sort(listaEnRango,cmpArtworkByDateAcquired)
@@ -287,9 +290,10 @@ def RankingCountriesByArtworks (catalog):
         lt.addLast(listaNumObras,listaElement)
     m.sort(listaNumObras,cmpNumObras)
     infoNacionalidadMayor=lt.newList("ARRAY_LIST")
-    mayor=mp.get(nacionalidades,lt.firstElement(lt.firstElement(listaNumObras)))["value"]
-    lt.addLast(infoNacionalidadMayor,mayor)
-    dictRta={"Num obras": listaNumObras, "info mayor": mayor}
+    mayor=lt.firstElement(listaNumObras)
+    mayor=lt.firstElement(mayor)
+    info=mp.get(nacionalidades,mayor)["value"]
+    dictRta={"Num obras": listaNumObras, "info mayor": info}
     return(dictRta)
 
 #RETO 1 VERSIÓN 

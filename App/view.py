@@ -181,9 +181,6 @@ while True:
             lt.addLast(lista10,lt.getElement(top10,a))
             a+=1
         print("El top 10 de los países en el MoMa son: ")
-        primeras=lt.subList(top10,1,3)
-        size=lt.size(top10)
-        ultimas=lt.subList(top10,size-3,3)
         x=PrettyTable()
         x.field_names=["Nacionalidades", "Número de obras"]
         for i in lt.iterator(lista10):
@@ -192,33 +189,13 @@ while True:
             x.add_row([str(nationality),str(number)])
             x.max_width = 10
         print(x)
+        size=lt.size(mayor)
+        primeras=lt.subList(mayor,1,3)
+        ultimas=lt.subList(mayor,size-3,3)
+        print("Las primeras 3  obras en esta técnica son:")  
         print(primeras)
-        b=PrettyTable()
-        b.field_names=["Titulo","Artistas","Fecha","Medio","Dimensiones"]
-        for i in lt.iterator(primeras):
-            artistasTexto= ""
-            #for artista in lt.iterator(i["Artistas"]):
-                #nombre= artista["DisplayName"]
-                #if artistasTexto=="":
-                    #artistasTexto= artistasTexto + nombre
-                #else:
-                    #artistasTexto= artistasTexto + ","+ nombre
-            b.add_row([str(i["Title"]),str(i[artistasTexto]),str(i["Date"]),str(i["Medium"],str(i["Dimensions"]))]) 
-        c=PrettyTable()
-        c.field_names=["Titulo","Artistas","Fecha","Medio","Dimensiones"]
-        for i in lt.iterator(ultimas):
-            artistasTexto= ""
-            #for artista in lt.iterator(i["Artistas"]):
-                #nombre= artista["DisplayName"]
-                #if artistasTexto=="":
-                    #artistasTexto= artistasTexto + nombre
-                #else:
-                    #artistasTexto= artistasTexto + ","+ nombre
-            c.add_row([str(i["Title"]),str(i[artistasTexto]),str(i["Date"]),str(i["Medium"],str(i["Dimensions"]))]) 
-            print("Las primeras 3  obras en esta técnica son:")  
-            print(b)
-            print("Las ultimas 3  obras en esta técnica son:") 
-            print(c)       
+        print("Las ultimas 3  obras en esta técnica son:") 
+            
         stop_time = time.process_time()
         timepaso= stop_time-start_time
         print("Tiempo transcurrido "+ str(timepaso))
