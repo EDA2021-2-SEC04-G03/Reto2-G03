@@ -71,8 +71,8 @@ def OrdenarDepartamentoAsignarPrecioyPeso(catalogo, departamento):
     ObrasPorDepartamento= model.OrdenarDepartamentoAsignarPrecioyPeso(catalogo, departamento)
     return ObrasPorDepartamento 
 # Funciones de consulta sobre el catálogo
-def RankingCountriesByArtworks(catalog,obras):
-    return model.RankingCountriesByArtworks(catalog,obras)
+def RankingCountriesByArtworks(catalog):
+    return model.RankingCountriesByArtworks(catalog)
 def ObrasPorArtistaPorTecnica(catalogo,nombre):
     return model.ObrasPorArtistaPorTecnica(catalogo,nombre)
 def buscarTecnicaMasRep(dicTecnicas):

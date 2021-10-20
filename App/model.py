@@ -268,7 +268,13 @@ def buscarTecnicaMasRep(Tecnicas):
             TecnicaMas= tecnica
     return TecnicaMas
 #REQ 4#
-def RankingCountriesByArtworks (catalog,obras):
+def cmpNumObras (num1,num2):
+    num1=lt.lastElement(num1)
+    num2=lt.lastElement(num2)
+    temp=False
+    temp= int(num1)>int(num2)
+    return temp
+def RankingCountriesByArtworks (catalog):
     nacionalidades=catalog["obras"]["mNacionalidad"]
     keyNacionalidades=mp.keySet(nacionalidades)
     listaNumObras=lt.newList("ARRAY_LIST")
@@ -280,14 +286,12 @@ def RankingCountriesByArtworks (catalog,obras):
         lt.addLast(listaElement,tam)
         lt.addLast(listaNumObras,listaElement)
     m.sort(listaNumObras,cmpNumObras)
-    return(listaNumObras)
+    infoNacionalidadMayor=lt.newList("ARRAY_LIST")
+    mayor=mp.get(nacionalidades,lt.firstElement(lt.firstElement(listaNumObras)))["value"]
+    lt.addLast(infoNacionalidadMayor,mayor)
+    dictRta={"Num obras": listaNumObras, "info mayor": mayor}
+    return(dictRta)
 
-def cmpNumObras (num1,num2):
-    num1=lt.lastElement(num1)
-    num2=lt.lastElement(num2)
-    temp=False
-    temp= int(num1)>int(num2)
-    return temp
 #RETO 1 VERSIÓN 
 #def RankingCountriesByArtworks (catalog,obras):
     #lista_artistas=catalog["artistas"]
@@ -313,28 +317,50 @@ def AsignarPrecio(object):
     if object["Width (cm)"]!="" and object["Height (cm)"]!="":
         m2=(float(object["Width (cm)"]))*(float(object["Height (cm)"]))
         m2=m2/10000
-    elif object["Circumference (cm)"]!="" and object["Diameter (cm)"]!="":
-        m2=(float(object["Circumference (cm)"]))*(float(object["Circumference (cm)"]))
-        m2=m2/10000
-    precio=-1
+    m_c=-1
+    if object["Height (cm)"]!="" and object["Diameter (cm)"]!="":
+        m_c=float(object["Diameter (cm)"])**2*float(object["Height (cm)"])*3.14/4
+        m_c=m_c/10000
+    m_c2=-1
+    if object["Diameter (cm)"]!="" and object["Depth (cm)"]!="":
+        m_c2=(float(object["Diameter (cm)"])**2)*float(object["Depth (cm)"])*3.14/4
+        m_c2=float(m_c2)/10000
+    m_c3=-1
+    if object["Height (cm)"]!="" and object["Circumference (cm)"]!="":
+        m_c3=(float(object["Circumference (cm)"])/3.14)**2*float(object["Height (cm)"])*3.14/4
+        m_c3=m_c3/10000
     preciom3= 0
     preciom2= 0
     precioKg= 0
+    precio_circun=0
+    precio_circun2=0
+    precio_circun3=0
     if object["Weight (kg)"] != "":
         precioKg= 72* float(object["Weight (kg)"])
     if m3>0:
         preciom3= 72* float(m3)
     if m2>0:
         preciom2= 72* float(m2)
-    if preciom3 ==0 and preciom2==0 and precioKg==0:
-        precio=48
-    elif preciom2> preciom3 and preciom2> precioKg:
-        precio= preciom2
-    elif preciom3> preciom2 and preciom3> precioKg:
-        precio= preciom3
-    elif precioKg> preciom2 and precioKg> preciom3:
-        precio= precioKg 
-    return (round(precio,2))
+    if m_c>0:
+        precio_circun=72*float(m_c)
+    if m_c2>0:
+        precio_circun2=72*float(m_c2)
+    if m_c3>0:
+        precio_circun3=72*float(m_c3)
+    listaPrecios=lt.newList("ARRAY_LIST")
+    lt.addLast(listaPrecios,precio_circun)
+    lt.addLast(listaPrecios,precio_circun2)
+    lt.addLast(listaPrecios,precio_circun3)
+    lt.addLast(listaPrecios,preciom2)
+    lt.addLast(listaPrecios,preciom3)
+    lt.addLast(listaPrecios,precioKg)
+    mayor=0
+    for i in lt.iterator(listaPrecios):
+        if i>mayor:
+            mayor=i
+    if mayor==0:
+        mayor=48
+    return (round(mayor,2))
 
 def OrdenarDepartamentoAsignarPrecioyPeso(catalogo, departamento):
     obrasPorDepartamento= mp.get(catalogo['obras']["mDepartamento"],departamento)["value"]

@@ -20,6 +20,7 @@
  * along withthis program.  If not, see <http://www.gnu.org/licenses/>.
  """
 
+import prettytable
 import config as cf
 import sys
 import controller
@@ -171,11 +172,53 @@ while True:
         print("Tiempo transcurrido "+ str(timepaso))
     elif int(inputs[0])==5:
         start_time = time.process_time()
-        obras=catalog["obras"]
-        nacionalidades=controller.RankingCountriesByArtworks(catalog,obras)
+        nacionalidades=controller.RankingCountriesByArtworks(catalog)
+        top10=nacionalidades["Num obras"]
+        lista10=lt.newList("ARRAY_LIST")
+        mayor=nacionalidades["info mayor"]
+        a=1
+        while a<=10:
+            lt.addLast(lista10,lt.getElement(top10,a))
+            a+=1
         print("El top 10 de los países en el MoMa son: ")
-        num=0
-        print (nacionalidades)
+        primeras=lt.subList(top10,1,3)
+        size=lt.size(top10)
+        ultimas=lt.subList(top10,size-3,3)
+        x=PrettyTable()
+        x.field_names=["Nacionalidades", "Número de obras"]
+        for i in lt.iterator(lista10):
+            nationality=lt.getElement(i,1)
+            number=lt.getElement(i,2)
+            x.add_row([str(nationality),str(number)])
+            x.max_width = 10
+        print(x)
+        print(primeras)
+        b=PrettyTable()
+        b.field_names=["Titulo","Artistas","Fecha","Medio","Dimensiones"]
+        for i in lt.iterator(primeras):
+            artistasTexto= ""
+            #for artista in lt.iterator(i["Artistas"]):
+                #nombre= artista["DisplayName"]
+                #if artistasTexto=="":
+                    #artistasTexto= artistasTexto + nombre
+                #else:
+                    #artistasTexto= artistasTexto + ","+ nombre
+            b.add_row([str(i["Title"]),str(i[artistasTexto]),str(i["Date"]),str(i["Medium"],str(i["Dimensions"]))]) 
+        c=PrettyTable()
+        c.field_names=["Titulo","Artistas","Fecha","Medio","Dimensiones"]
+        for i in lt.iterator(ultimas):
+            artistasTexto= ""
+            #for artista in lt.iterator(i["Artistas"]):
+                #nombre= artista["DisplayName"]
+                #if artistasTexto=="":
+                    #artistasTexto= artistasTexto + nombre
+                #else:
+                    #artistasTexto= artistasTexto + ","+ nombre
+            c.add_row([str(i["Title"]),str(i[artistasTexto]),str(i["Date"]),str(i["Medium"],str(i["Dimensions"]))]) 
+            print("Las primeras 3  obras en esta técnica son:")  
+            print(b)
+            print("Las ultimas 3  obras en esta técnica son:") 
+            print(c)       
         stop_time = time.process_time()
         timepaso= stop_time-start_time
         print("Tiempo transcurrido "+ str(timepaso))
