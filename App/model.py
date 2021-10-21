@@ -55,10 +55,8 @@ def newCatalog():
     catalog['artistas']["mID"]=mp.newMap(20000,maptype="CHAINING",loadfactor=4)
     catalog['artistas']["mNombre"]=mp.newMap(20000,maptype="CHAINING",loadfactor=4)
     catalog['artistas']["mAnoNacimiento"]=mp.newMap(20000,maptype="CHAINING",loadfactor=4)
-    catalog['obras'] =  {"mMedio":None,"mDepartamento": None, "mFechaAd": None,"mNacionalidad": None}
     catalog['obras']["mDepartamento"]=mp.newMap(200000,maptype="CHAINING", loadfactor=4)
     catalog['obras']["mNacionalidad"]=mp.newMap(200000,maptype="CHAINING", loadfactor=4)
-    catalog['obras']["mMedio"]=mp.newMap(200000,maptype="CHAINING", loadfactor=4)
     catalog['obras']["mFechaAd"]=mp.newMap(200000,maptype="CHAINING", loadfactor=4)
     return catalog
 
@@ -142,7 +140,6 @@ def addObra(catalog, obra):
         if lt.size(artwork["Nacionalidad"])==0 or lt.isPresent(artwork["Nacionalidad"], nacionalidad) !=0:
             lt.addLast(artwork["Nacionalidad"],nacionalidad)
 
-    addOrCreateListInMap(catalog['obras']["mMedio"], artwork["Medium"],artwork)
     addOrCreateListInMap(catalog['obras']["mDepartamento"], artwork["Department"],artwork)
     addOrCreateListInMap(catalog['obras']["mFechaAd"], artwork["DateAcquired"],artwork)
     for nacionalidad in lt.iterator(artwork["Nacionalidad"]):
@@ -183,18 +180,7 @@ def cmpArtistByDate(artist1, artist2):
         fecha2=0
     temp= int(fecha1)<int(fecha2)
     return temp
-#RETO 1 VERSIÓN SIN MAPA
-# def sortArtistInDateRange(catalog, date1,date2):
-#     # req1
-#     date1 = int(date1)
-#     date2 = int(date2)
-#     listaEnRango = lt.newList("ARRAY_LIST") 
-#     for i in lt.iterator(catalog['artistas']):
-#         date= int(i['BeginDate'])
-#         if date != 0 and date >= date1 and date<=date2:
-#             lt.addLast(listaEnRango, i)
-#     listaOrdenada= m.sort(ListaEnRango,cmpArtistByDate)
-#     return (listaEnRango)
+
 #REQ 2#
 def sortArtworksandRange(catalog,inicial,final):
     inicial=datetime.strptime(str(inicial),"%Y-%m-%d")
@@ -217,24 +203,6 @@ def sortArtworksandRange(catalog,inicial,final):
     lista_ordenada= m.sort(listaEnRango,cmpArtworkByDateAcquired)
     dictRta={"lista":lista_ordenada,"numPurchased":purchased}
     return (dictRta)
-#Versión sin mapa
-#def sortArtworksandRange(lista,inicial,final):
-#   inicial=datetime.strptime(str(inicial),"%Y-%m-%d")
-#   final=datetime.strptime(str(final),"%Y-%m-%d")
-#   listaEnRango= lt.newList("ARRAY_LIST")
-#   purchased=0
-#   for i in lt.iterator(lista):
-#        date=i['DateAcquired']
-#       if date=="":
-#           date="0001-01-01"
-#       date_format=datetime.strptime(str(date),"%Y-%m-%d")
-#       if date_format<= final and date_format>=inicial:
-#               lt.addLast(listaEnRango,i)
-#               credit_line= str(i["CreditLine"]).lower()
-#               if ("Purchase").lower() in credit_line or ("Purchased").lower() in credit_line :
-#                   purchased+=1
-#     lista_ordenada= ins.sort(listaEnRango,cmpArtworkByDateAcquired)
-#     return (lista_ordenada,purchased)
 def sortArtworksByDate(lista):
     lista_ordenada= lista.copy()
     lista_ordenada= m.sort(lista_ordenada,cmpArtworkByDate)
@@ -377,7 +345,7 @@ def OrdenarDepartamentoAsignarPrecioyPeso(catalogo, departamento):
     lt.addLast(listaR, obrasPorDepartamento)
     return listaR
 
-# Funciones utilizadas para comparar elementos dentro de una lista
+# Funciones utilizadas para comparar elementos dentro de una lista O para sort
 def cmpArtistId(artist1, artist2):
     if artist1["ConstituentID"] < artist2["ConstituentID"]:
         return -1 
@@ -429,7 +397,3 @@ def compareNacionalidades (name,tag):
         return 1
     else:
         return -1
-def cmpArtworkPorPrecio(Artwork1,Artwork2):
-    precio1=Artwork1["precio"]
-    precio2=Artwork2["precio"]
-    return precio1< precio2

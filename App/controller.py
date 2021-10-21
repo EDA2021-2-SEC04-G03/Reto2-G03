@@ -46,7 +46,6 @@ def loadArtistas(catalog):
     input_file = csv.DictReader(open(Artistfile, encoding='utf-8'))
     for artist in input_file:
         model.addArtist(catalog, artist)
-
 def loadObras(catalog):
     """
     Carga todas las obras del archivo y la agrega a la lista de obras en el catalogo general
