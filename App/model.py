@@ -46,15 +46,14 @@ los mismos.
 
 # Construccion de modelos
 def newCatalog():
-    estructura= "ARRAY_LIST"
     catalog = {'obras': None,
                'artistas': None,
                }
-
     catalog['artistas'] = {"mID":None,"mAnoNacimiento": None, "mNombre": None}
     catalog['artistas']["mID"]=mp.newMap(20000,maptype="CHAINING",loadfactor=4)
     catalog['artistas']["mNombre"]=mp.newMap(20000,maptype="CHAINING",loadfactor=4)
     catalog['artistas']["mAnoNacimiento"]=mp.newMap(20000,maptype="CHAINING",loadfactor=4)
+    catalog['obras'] = {"mDepartamento": None, "mFechaAd": None,"mNacionalidad": None}
     catalog['obras']["mDepartamento"]=mp.newMap(200000,maptype="CHAINING", loadfactor=4)
     catalog['obras']["mNacionalidad"]=mp.newMap(200000,maptype="CHAINING", loadfactor=4)
     catalog['obras']["mFechaAd"]=mp.newMap(200000,maptype="CHAINING", loadfactor=4)
