@@ -203,23 +203,19 @@ def sortArtworksandRange(catalog,inicial,final):
     listaEnRango= lt.newList("ARRAY_LIST")
     listaInfo=lt.newList("ARRAY_LIST")
     purchased=0
-    for i in lt.iterator(listaAnhosAd):
-         date=i
+    for date in lt.iterator(listaAnhosAd):
          if date=="":
-           date="0001-01-01"
+             date="0001-01-01"
          date_format=datetime.strptime(str(date),"%Y-%m-%d")
          if date_format<= final and date_format>=inicial:
                listaInfo=mp.get(catalog["obras"]["mFechaAd"],date)["value"]
                for info in lt.iterator(listaInfo):
                    lt.addLast(listaEnRango,info)
-               creditLine=catalog["obras"]["mFechaAd"]
-               credit=mp.get(creditLine,i)
-               credit=me.getValue(credit)
-               credit=credit["CreditLine"]
-               if creditLine in ("Purchase").lower or ("Purchased").lower() in creditLine:
-                   purchased+=1
+                   credit_line= str(info["CreditLine"]).lower()
+                   if ("Purchase").lower() in credit_line or ("Purchased").lower() in credit_line :
+                        purchased+=1
     lista_ordenada= m.sort(listaEnRango,cmpArtworkByDateAcquired)
-    dictRta={"lista":lista_ordenada,"numPurchase":purchased}
+    dictRta={"lista":lista_ordenada,"numPurchased":purchased}
     return (dictRta)
 #Versión sin mapa
 #def sortArtworksandRange(lista,inicial,final):
@@ -397,6 +393,7 @@ def cmpObraId(obra1, obra2):
     else: 
         return 1
 def cmpArtworkByDateAcquired(artwork1, artwork2):
+    #req 2, re utilizò la librerìa datetime#
     fecha1= str(artwork1['DateAcquired'])
     fecha2=str(artwork2['DateAcquired'])
     if fecha1=="":
@@ -405,12 +402,7 @@ def cmpArtworkByDateAcquired(artwork1, artwork2):
         fecha2="0001-01-01"
     date1 = datetime.strptime(fecha1, "%Y-%m-%d")
     date2 = datetime.strptime(fecha2, "%Y-%m-%d")
-    if  int(date1)<int(date2):
-        return -1 
-    elif int(date1)==int(date2):
-        return 0
-    else: 
-        return 1
+    return date1<date2
 
 def cmpArtworkByDate(artwork1, artwork2):
     fecha1= (artwork1['Date'])

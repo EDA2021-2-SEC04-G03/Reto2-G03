@@ -126,12 +126,58 @@ while True:
         inicial= input("Indique la fecha inicial: ")
         final= input("Indique la fecha final: ")
         dict = (controller.sortArtworksandRange(catalog,inicial,final))
-        if lt.isEmpty(dict["lista"]):
+        listaObrasRango= dict["lista"]
+        if lt.isEmpty(listaObrasRango):
             print("No hay obras en el rango")
         else:
-            print("Hay "+ str(lt.size(dict["lista"]))+ " obras  entre "+ str(inicial) +" y "+ str(final))
+            print("Hay "+ str(lt.size(listaObrasRango))+ " obras  entre "+ str(inicial) +" y "+ str(final))
             print("Hay "+ str(dict["numPurchased"])+ " obras adquiridas por compra")
-            
+            if lt.size(listaObrasRango) <= 3:
+                print("Hay 3 o menos obras en esta técnica, estas son:")
+                x = PrettyTable() 
+                x.field_names = ["Titulo","Fecha de la Obra", "Medio", "Dimensiones","Artistas", "Fecha Ad"]
+                for i in lt.iterator(listaObrasRango):
+                    artistasTexto= ""
+                    for artista in lt.iterator(i["Artists"]):
+                        nombre= artista["DisplayName"]
+                        if artistasTexto=="":
+                            artistasTexto= artistasTexto + nombre
+                        else:
+                            artistasTexto= artistasTexto + ","+ nombre
+                    x.add_row([str(i["Title"]),str(i["Date"]),str(i["Medium"]),str(i["Dimensions"]),str(artistasTexto),str(i["DateAcquired"])])
+                    x.max_width = 16
+                print(x)
+            elif lt.size(listaObrasRango) > 3:
+                primeras= lt.subList(listaObrasRango,1,3)
+                a = PrettyTable() 
+                a.field_names = ["Titulo","Fecha de la Obra", "Medio", "Dimensiones","Artistas", "Fecha Ad"]
+                for i in lt.iterator(primeras):
+                    artistasTexto= ""
+                    for artista in lt.iterator(i["Artists"]):
+                        nombre= artista["DisplayName"]
+                        if artistasTexto=="":
+                            artistasTexto= artistasTexto + nombre
+                        else:
+                            artistasTexto= artistasTexto + ","+ nombre
+                    a.add_row([str(i["Title"]),str(i["Date"]),str(i["Medium"]),str(i["Dimensions"]),str(artistasTexto),str(i["DateAcquired"])])
+                    a.max_width = 16
+                ultimas= lt.subList(listaObrasRango,lt.size(listaObrasRango)-3,3)
+                b = PrettyTable() 
+                b.field_names = ["Titulo","Fecha de la Obra", "Medio", "Dimensiones","Artistas", "Fecha Ad"]
+                for i in lt.iterator(ultimas):
+                    artistasTexto= ""
+                    for artista in lt.iterator(i["Artists"]):
+                        nombre= artista["DisplayName"]
+                        if artistasTexto=="":
+                            artistasTexto= artistasTexto + nombre
+                        else:
+                            artistasTexto= artistasTexto + ","+ nombre
+                    b.add_row([str(i["Title"]),str(i["Date"]),str(i["Medium"]),str(i["Dimensions"]),str(artistasTexto),str(i["DateAcquired"])])
+                    b.max_width = 16
+                print("Las primeras 3  obras en esta técnica son:")  
+                print(a)
+                print("Las ultimas 3  obras en esta técnica son:") 
+                print(b)    
         stop_time = time.process_time()
         timepaso= stop_time-start_time
         print("Tiempo transcurrido "+ str(timepaso))
