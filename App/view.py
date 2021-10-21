@@ -211,13 +211,10 @@ while True:
             x.add_row([str(nationality),str(number)])
             x.max_width = 10
         print(x)
-        size=lt.size(mayor)
         primeras=lt.subList(mayor,1,3)
+        size=lt.size(mayor)
         ultimas=lt.subList(mayor,size-3,3)
-        print("Las primeras 3  obras en esta técnica son:")  
         print(primeras)
-        print("Las ultimas 3  obras en esta técnica son:") 
-            
         stop_time = time.process_time()
         timepaso= stop_time-start_time
         print("Tiempo transcurrido "+ str(timepaso))

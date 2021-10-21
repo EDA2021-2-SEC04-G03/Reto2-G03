@@ -253,10 +253,11 @@ def RankingCountriesByArtworks (catalog):
         lt.addLast(listaNumObras,listaElement)
     m.sort(listaNumObras,cmpNumObras)
     infoNacionalidadMayor=lt.newList("ARRAY_LIST")
-    mayor=lt.firstElement(listaNumObras)
-    mayor=lt.firstElement(mayor)
+    mayor0=lt.firstElement(listaNumObras)
+    mayor=lt.firstElement(mayor0)
     info=mp.get(nacionalidades,mayor)["value"]
-    dictRta={"Num obras": listaNumObras, "info mayor": info}
+    lt.addLast(infoNacionalidadMayor,info)
+    dictRta={"Num obras": listaNumObras, "info mayor": infoNacionalidadMayor}
     return(dictRta)
 
 #RETO 1 VERSIÓN 
